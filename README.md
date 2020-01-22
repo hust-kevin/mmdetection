@@ -70,6 +70,7 @@ Results and models are available in the [Model zoo](docs/MODEL_ZOO.md).
 | Foveabox           | ✓        | ✓        | ☐        | ✗        | ✓     |
 | FreeAnchor         | ✓        | ✓        | ☐        | ✗        | ✓     |
 | NAS-FPN            | ✓        | ✓        | ☐        | ✗        | ✓     |
+| ATSS               | ✓        | ✓        | ☐        | ✗        | ✓     |
 
 Other features
 - [x] DCNv2
@@ -80,6 +81,7 @@ Other features
 - [x] Generalized Attention
 - [x] GCNet
 - [x] Mixed Precision (FP16) Training
+- [x] [InstaBoost](configs/instaboost/README.md)
 
 
 ## Installation

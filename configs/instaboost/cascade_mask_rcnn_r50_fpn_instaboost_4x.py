@@ -9,10 +9,7 @@ model = dict(
         num_stages=4,
         out_indices=(0, 1, 2, 3),
         frozen_stages=1,
-        style='pytorch',
-        dcn=dict(
-            type='DCN', deformable_groups=1, fallback_on_stride=False),
-        stage_with_dcn=(False, True, True, True)),
+        style='pytorch'),
     neck=dict(
         type='FPN',
         in_channels=[256, 512, 1024, 2048],
@@ -185,6 +182,17 @@ img_norm_cfg = dict(
     mean=[123.675, 116.28, 103.53], std=[58.395, 57.12, 57.375], to_rgb=True)
 train_pipeline = [
     dict(type='LoadImageFromFile'),
+    dict(
+        type='InstaBoost',
+        action_candidate=('normal', 'horizontal', 'skip'),
+        action_prob=(1, 0, 0),
+        scale=(0.8, 1.2),
+        dx=15,
+        dy=15,
+        theta=(-1, 1),
+        color_prob=0.5,
+        hflag=False,
+        aug_ratio=0.5),
     dict(type='LoadAnnotations', with_bbox=True, with_mask=True),
     dict(type='Resize', img_scale=(1333, 800), keep_ratio=True),
     dict(type='RandomFlip', flip_ratio=0.5),
@@ -235,7 +243,7 @@ lr_config = dict(
     warmup='linear',
     warmup_iters=500,
     warmup_ratio=1.0 / 3,
-    step=[8, 11])
+    step=[32, 44])
 checkpoint_config = dict(interval=1)
 # yapf:disable
 log_config = dict(
@@ -246,10 +254,10 @@ log_config = dict(
     ])
 # yapf:enable
 # runtime settings
-total_epochs = 12
+total_epochs = 48
 dist_params = dict(backend='nccl')
 log_level = 'INFO'
-work_dir = './work_dirs/cascade_mask_rcnn_dconv_c3-c5_r50_fpn_1x'
+work_dir = './work_dirs/cascade_mask_rcnn_r50_fpn_instaboost_4x'
 load_from = None
 resume_from = None
 workflow = [('train', 1)]
